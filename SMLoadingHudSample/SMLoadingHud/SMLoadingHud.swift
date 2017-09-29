@@ -37,7 +37,7 @@ open class SMLoadingHud: UIWindow {
     public init(indicatorType: SMLoadingIndicatorType) {
         super.init(frame: .zero)
         
-        self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.alpha = 0.0
         self.windowLevel = UIWindowLevelAlert
         self.makeKeyAndVisible()
@@ -97,6 +97,10 @@ open class SMLoadingHud: UIWindow {
         NSLayoutConstraint.activate([leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
     }
     
+    class open func setIndicatorType(type: SMLoadingIndicatorType) {
+        
+    }
+    
     class open func setBackgroundView(view: UIView?) {
         DispatchQueue.main.async {
             let hud = SMLoadingHud.defaultHud
@@ -114,6 +118,16 @@ open class SMLoadingHud: UIWindow {
             hud.text = text
         }
     }
+    
+    open override func didMoveToWindow() {
+        super.didMoveToWindow()
+        
+        guard let superWindow = self.superview else { return }
+        DispatchQueue.main.async {
+            self.frame = superWindow.bounds
+            self.layoutIfNeeded()
+        }
+    }
 }
 
 
@@ -128,8 +142,6 @@ extension SMLoadingHud {
         
         DispatchQueue.main.async {
             let hud = SMLoadingHud.defaultHud
-            hud.frame = window.bounds
-            hud.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             hud.alpha = 0.0
             hud.label.text = text
             window.addSubview(hud)

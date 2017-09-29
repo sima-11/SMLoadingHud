@@ -10,7 +10,6 @@ import SceneKit
 
 open class SMLoadingIndicatorView: SCNView {
     
-    private var indicatorNode: SCNNode!
     private var aScene: SCNScene!
     
     internal var objectNode: SCNNode!
