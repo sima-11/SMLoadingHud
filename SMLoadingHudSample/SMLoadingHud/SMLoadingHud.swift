@@ -8,33 +8,30 @@
 
 import UIKit
 
-public enum SMLoadingIndicatorType: Int {
-    case cube
-}
-
 open class SMLoadingHud: UIWindow {
     
-    private static let defaultHud = SMLoadingHud(indicatorType: .cube)
+    private static let `default` = SMLoadingHud()
     
     private var indicatorView: SMLoadingIndicatorView!
-    private var indicatorType: SMLoadingIndicatorType = .cube
     private var backgroundView: UIView?
     
     private var indicatorContainer: UIView!
     private var label: UILabel!
     private var text: String?
     
+    open var customIndicator: SMLoadingIndicator?
+    
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) is not supposed to be used. Use init(indicatorType:) instead.")
+        fatalError("init(coder:) is not supposed to be used. Use init() instead.")
     }
     
     override public init(frame: CGRect) {
-        fatalError("init(frame:) is not supposed to be used. Use init(indicatorType:) instead.")
+        fatalError("init(frame:) is not supposed to be used. Use init() instead.")
     }
     
     
-    public init(indicatorType: SMLoadingIndicatorType) {
+    public init() {
         super.init(frame: .zero)
         
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -48,10 +45,7 @@ open class SMLoadingHud: UIWindow {
         self.label = UILabel(frame: .zero)
         self.indicatorContainer.addSubview(self.label)
         
-        switch indicatorType {
-        case .cube:
-            self.indicatorView = SMLoadingCubeView()
-        }
+        self.indicatorView = SMLoadingIndicatorView()
         self.indicatorContainer.addSubview(self.indicatorView)
         
         self.setupIndicatorContainer()
@@ -97,28 +91,6 @@ open class SMLoadingHud: UIWindow {
         NSLayoutConstraint.activate([leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
     }
     
-    class open func setIndicatorType(type: SMLoadingIndicatorType) {
-        
-    }
-    
-    class open func setBackgroundView(view: UIView?) {
-        DispatchQueue.main.async {
-            let hud = SMLoadingHud.defaultHud
-            hud.backgroundView?.removeFromSuperview()
-            hud.backgroundView = view
-            if let background = hud.backgroundView {
-                hud.insertSubview(background, at: 0)
-            }
-        }
-    }
-    
-    class open func setText(_ text: String) {
-        DispatchQueue.main.async {
-            let hud = SMLoadingHud.defaultHud
-            hud.text = text
-        }
-    }
-    
     open override func didMoveToWindow() {
         super.didMoveToWindow()
         
@@ -130,37 +102,76 @@ open class SMLoadingHud: UIWindow {
     }
 }
 
+//MARK: <#Configurations#>
+extension SMLoadingHud {
+    
+    class open func setIndicatorType(type: SMLoadingIndicatorType) {
+        let hud = SMLoadingHud.default
+        
+        DispatchQueue.main.async {
+            hud.indicatorView.indicator.stopAnimation()
+            hud.indicatorView.indicator.rootNode.removeFromParentNode()
+            switch type {
+            case .cube:
+                hud.indicatorView.indicator = SMCubeIndicator()
+            case .custom:
+                guard let indicator = hud.customIndicator else {
+                    fatalError("customIndicator must be assigned before using .custom as the indicator type.")
+                }
+                hud.indicatorView.indicator = indicator
+            }
+        }
+    }
+    
+    class open func setBackgroundView(view: UIView?) {
+        DispatchQueue.main.async {
+            
+            let hud = SMLoadingHud.default
+            hud.backgroundView?.removeFromSuperview()
+            hud.backgroundView = view
+            if let background = hud.backgroundView {
+                hud.insertSubview(background, at: 0)
+            }
+        }
+    }
+    
+    class open func setText(_ text: String) {
+        DispatchQueue.main.async {
+            let hud = SMLoadingHud.default
+            hud.text = text
+        }
+    }
+}
 
-// MARK: <#Animation#>
+
+//MARK: <#Animation#>
 extension SMLoadingHud {
     
     class open func presentWithText(_ text: String?) {
-        
         guard let window = (UIApplication.shared.delegate as? AppDelegate)?.window else {
             fatalError()
         }
         
         DispatchQueue.main.async {
-            let hud = SMLoadingHud.defaultHud
-            hud.alpha = 0.0
+            let hud = SMLoadingHud.default
             hud.label.text = text
             window.addSubview(hud)
             
             UIView.animate(withDuration: 0.25, animations: {
                 hud.alpha = 1.0
             })
-            hud.indicatorView.startAnimation()
+            hud.indicatorView.indicator.startAnimation()
         }
     }
     
     class open func dismiss(completion: (() -> Void)?) {
         DispatchQueue.main.async {
-            let hud = SMLoadingHud.defaultHud
+            let hud = SMLoadingHud.default
             UIView.animate(withDuration: 0.25, animations: {
                 hud.alpha = 0.0
                 
             }, completion: {_ in
-                hud.indicatorView.stopAnimation()
+                hud.indicatorView.indicator.stopAnimation()
                 hud.removeFromSuperview()
                 completion?()
             })

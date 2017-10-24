@@ -14,7 +14,9 @@
 		493183C71F7A8AAE00D2C789 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 493183C61F7A8AAE00D2C789 /* Assets.xcassets */; };
 		493183CA1F7A8AAE00D2C789 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 493183C81F7A8AAE00D2C789 /* LaunchScreen.storyboard */; };
 		493183D51F7A8C0100D2C789 /* SMLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493183D41F7A8C0100D2C789 /* SMLoadingIndicatorView.swift */; };
-		493183D71F7A924500D2C789 /* SMLoadingCubeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493183D61F7A924500D2C789 /* SMLoadingCubeView.swift */; };
+		4973D9851F7E5DCB009D05E9 /* SMLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973D9841F7E5DCB009D05E9 /* SMLoadingIndicator.swift */; };
+		4973D9871F7E8C8F009D05E9 /* SMCubeIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973D9861F7E8C8F009D05E9 /* SMCubeIndicator.swift */; };
+		49C2B61A1F9F75990001CB7A /* SMLoadingIndicatorCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C2B6191F9F75990001CB7A /* SMLoadingIndicatorCreation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +29,9 @@
 		493183CB1F7A8AAE00D2C789 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		493183D21F7A8AFA00D2C789 /* SMLoadingHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMLoadingHud.swift; sourceTree = "<group>"; };
 		493183D41F7A8C0100D2C789 /* SMLoadingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMLoadingIndicatorView.swift; sourceTree = "<group>"; };
-		493183D61F7A924500D2C789 /* SMLoadingCubeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMLoadingCubeView.swift; sourceTree = "<group>"; };
+		4973D9841F7E5DCB009D05E9 /* SMLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMLoadingIndicator.swift; sourceTree = "<group>"; };
+		4973D9861F7E8C8F009D05E9 /* SMCubeIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMCubeIndicator.swift; sourceTree = "<group>"; };
+		49C2B6191F9F75990001CB7A /* SMLoadingIndicatorCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMLoadingIndicatorCreation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,9 +64,9 @@
 		493183BE1F7A8AAE00D2C789 /* SMLoadingHudSample */ = {
 			isa = PBXGroup;
 			children = (
-				493183D11F7A8AFA00D2C789 /* SMLoadingHud */,
 				493183BF1F7A8AAE00D2C789 /* AppDelegate.swift */,
 				493183C11F7A8AAE00D2C789 /* ViewController.swift */,
+				493183D11F7A8AFA00D2C789 /* SMLoadingHud */,
 				493183C31F7A8AAE00D2C789 /* Main.storyboard */,
 				493183C61F7A8AAE00D2C789 /* Assets.xcassets */,
 				493183C81F7A8AAE00D2C789 /* LaunchScreen.storyboard */,
@@ -74,8 +78,8 @@
 		493183D11F7A8AFA00D2C789 /* SMLoadingHud */ = {
 			isa = PBXGroup;
 			children = (
-				493183D31F7A8BDC00D2C789 /* SMLoadingIndicator */,
 				493183D21F7A8AFA00D2C789 /* SMLoadingHud.swift */,
+				493183D31F7A8BDC00D2C789 /* SMLoadingIndicator */,
 			);
 			path = SMLoadingHud;
 			sourceTree = "<group>";
@@ -84,9 +88,27 @@
 			isa = PBXGroup;
 			children = (
 				493183D41F7A8C0100D2C789 /* SMLoadingIndicatorView.swift */,
-				493183D61F7A924500D2C789 /* SMLoadingCubeView.swift */,
+				4973D9841F7E5DCB009D05E9 /* SMLoadingIndicator.swift */,
+				49C2B61C1F9F886E0001CB7A /* Indicators */,
+				49C2B61B1F9F82D30001CB7A /* Protocols */,
 			);
 			path = SMLoadingIndicator;
+			sourceTree = "<group>";
+		};
+		49C2B61B1F9F82D30001CB7A /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				49C2B6191F9F75990001CB7A /* SMLoadingIndicatorCreation.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		49C2B61C1F9F886E0001CB7A /* Indicators */ = {
+			isa = PBXGroup;
+			children = (
+				4973D9861F7E8C8F009D05E9 /* SMCubeIndicator.swift */,
+			);
+			path = Indicators;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,7 +187,9 @@
 				490EAE621F7AC2E600BEF6B3 /* SMLoadingHud.swift in Sources */,
 				493183D51F7A8C0100D2C789 /* SMLoadingIndicatorView.swift in Sources */,
 				493183C01F7A8AAE00D2C789 /* AppDelegate.swift in Sources */,
-				493183D71F7A924500D2C789 /* SMLoadingCubeView.swift in Sources */,
+				4973D9851F7E5DCB009D05E9 /* SMLoadingIndicator.swift in Sources */,
+				4973D9871F7E8C8F009D05E9 /* SMCubeIndicator.swift in Sources */,
+				49C2B61A1F9F75990001CB7A /* SMLoadingIndicatorCreation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

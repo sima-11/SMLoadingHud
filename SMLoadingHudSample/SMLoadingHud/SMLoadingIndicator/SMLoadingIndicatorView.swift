@@ -10,10 +10,18 @@ import SceneKit
 
 open class SMLoadingIndicatorView: SCNView {
     
+    internal var indicator: SMLoadingIndicator = SMCubeIndicator() {
+        didSet {
+            DispatchQueue.main.async {
+                oldValue.stopAnimation()
+                oldValue.rootNode.removeFromParentNode()
+                self.aScene.rootNode.addChildNode(self.indicator.rootNode)
+            }
+        }
+    }
+    
     private var aScene: SCNScene!
     
-    internal var objectNode: SCNNode!
-    internal let actionKey = "SMLoadingIndicatorAction"
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -31,15 +39,16 @@ open class SMLoadingIndicatorView: SCNView {
     }
     
     convenience init() {
-        self.init(frame: CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0))
+        self.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     
+    
+    // MARK: <#Scene & Camera Setup#>
     private func setup() {
         self.setupScene()
         self.setupCamera()
-        self.buildObject()
-        self.addObjectNode()
+        self.aScene.rootNode.addChildNode(self.indicator.rootNode)
     }
     
     private func setupScene() {
@@ -51,29 +60,12 @@ open class SMLoadingIndicatorView: SCNView {
         self.scene = self.aScene
     }
     
+    /// Warning: Changing camera's position will have impact on the presentation of all indicators
     private func setupCamera() {
         let camera = SCNCamera()
         let cameraNode = SCNNode()
         cameraNode.camera = camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 6)
         self.aScene.rootNode.addChildNode(cameraNode)
-    }
-    
-    internal func buildObject() {
-        self.objectNode = SCNNode()
-    }
-    
-    private func addObjectNode() {
-        self.aScene.rootNode.addChildNode(self.objectNode)
-    }
-    
-    // MARK: <#Animation#>
-    /*
-     * The following two methods are only used for the interface declaration
-     * and are supposed to be overwritten by subclasses
-     */
-    internal func startAnimation() {
-    }
-    internal func stopAnimation() {
     }
 }
